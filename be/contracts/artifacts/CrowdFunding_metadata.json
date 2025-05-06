@@ -196,6 +196,72 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"name": "getUserCampaigns",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "owner",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "title",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "target",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "deadline",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amountCollected",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "image",
+								"type": "string"
+							},
+							{
+								"internalType": "address[]",
+								"name": "donators",
+								"type": "address[]"
+							},
+							{
+								"internalType": "uint256[]",
+								"name": "donations",
+								"type": "uint256[]"
+							}
+						],
+						"internalType": "struct CrowdFunding.Campaign[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "numberOfCampaigns",
 				"outputs": [
@@ -237,11 +303,11 @@
 	},
 	"sources": {
 		"contracts/CrowdFunding.sol": {
-			"keccak256": "0x85371c8d2366ab3e8fd370ad6b314e2881c00922887c6ca724492ade14fb1727",
+			"keccak256": "0x989227a51bdcbdd3e66f0f6232ed5afdb998d724cf758bb38be6b06eea70acf9",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://909a2289aaae10c588a5b7cd3b9260d9ef95ea6aab650157ccd4feba69a90b74",
-				"dweb:/ipfs/QmQAQPd6dawH8rddpBgT8bKYR9i8YECrsDzq95sH56Y1Tr"
+				"bzz-raw://29d300d20d907feca3ce71f0055c20933ddbcef638ae15b42dc1008b06449060",
+				"dweb:/ipfs/QmW6bc8eXwRyghimLhM7vk1yCYCGgEvREiGPaoMhMX3AdG"
 			]
 		}
 	},

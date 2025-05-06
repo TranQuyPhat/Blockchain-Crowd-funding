@@ -4,7 +4,7 @@ import CrowdFundingABI from "../abis/CrowdFunding.json"; // bạn cần đúng A
 
 const StateContext = createContext();
 
-const CONTRACT_ADDRESS = "0x71C95911E9a5D330f4D621842EC243EE1343292e";
+const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 export const StateContextProvider = ({ children }) => {
   const [provider, setProvider] = useState(null);
@@ -79,10 +79,38 @@ export const StateContextProvider = ({ children }) => {
 
   // Lấy chiến dịch của người dùng hiện tại
   const getUserCampaigns = async () => {
-    const allCampaigns = await getCampaigns();
-    return allCampaigns.filter((campaign) => campaign.owner === address);
-  };
+    try {
+      if (!contract) throw new Error("Hợp đồng chưa được khởi tạo!");
+      if (!address) {
+        console.warn("Ví chưa kết nối");
+        return [];
+      }
 
+      // Gọi trực tiếp hàm getUserCampaigns từ hợp đồng (khuyến nghị)
+      const campaigns = await contract.getUserCampaigns(address);
+
+      console.log("Raw data từ getUserCampaigns:", campaigns);
+
+      const parsedCampaigns = campaigns.map((campaign, i) => ({
+        owner: campaign.owner.toLowerCase(), // Chuẩn hóa địa chỉ
+        title: campaign.title,
+        description: campaign.description,
+        target: ethers.utils.formatEther(campaign.target.toString()),
+        deadline: campaign.deadline.toNumber(),
+        amountCollected: ethers.utils.formatEther(
+          campaign.amountCollected.toString()
+        ),
+        image: campaign.image,
+        pId: i,
+      }));
+
+      console.log("Parsed user campaigns:", parsedCampaigns);
+      return parsedCampaigns;
+    } catch (error) {
+      console.error("Lỗi khi lấy chiến dịch của người dùng:", error);
+      return [];
+    }
+  };
   // Gửi tiền ủng hộ
   const donate = async (pId, amount) => {
     const tx = await contract.donateToCampaign(pId, {
@@ -95,18 +123,21 @@ export const StateContextProvider = ({ children }) => {
 
   // Lấy danh sách người đã ủng hộ
   const getDonations = async (pId) => {
-    const donations = await contract.getDonators(pId);
-    const numberOfDonations = donations[0].length;
+    try {
+      if (!contract) throw new Error("Hợp đồng chưa được khởi tạo!");
 
-    const parsedDonations = [];
-    for (let i = 0; i < numberOfDonations; i++) {
-      parsedDonations.push({
-        donator: donations[0][i],
-        donation: ethers.utils.formatEther(donations[1][i].toString()),
-      });
+      const [donators, donations] = await contract.getDonators(pId);
+      const parsedDonations = donators.map((donator, i) => ({
+        donator: donator.toLowerCase(), // Chuẩn hóa địa chỉ
+        donation: ethers.utils.formatEther(donations[i].toString()),
+      }));
+
+      console.log("Parsed donations:", parsedDonations);
+      return parsedDonations;
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách ủng hộ:", error);
+      return [];
     }
-
-    return parsedDonations;
   };
 
   return (

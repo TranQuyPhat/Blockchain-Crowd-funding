@@ -66,4 +66,25 @@ contract CrowdFunding {
 
         return allCampaigns;
     }
+    function getUserCampaigns(address _owner) public view returns (Campaign[] memory) {
+        // Đếm số chiến dịch của _owner
+        uint256 count = 0;
+        for (uint256 i = 0; i < numberOfCampaigns; i++) {
+            if (campaigns[i].owner == _owner) {
+                count++;
+            }
+        }
+
+        // Tạo mảng kết quả
+        Campaign[] memory userCampaigns = new Campaign[](count);
+        uint256 index = 0;
+        for (uint256 i = 0; i < numberOfCampaigns; i++) {
+            if (campaigns[i].owner == _owner) {
+                userCampaigns[index] = campaigns[i];
+                index++;
+            }
+        }
+
+        return userCampaigns;
+    }
 }
