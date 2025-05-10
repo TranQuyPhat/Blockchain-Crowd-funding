@@ -4,7 +4,7 @@ import CrowdFundingABI from "../abis/CrowdFunding.json"; // bạn cần đúng A
 
 const StateContext = createContext();
 
-const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const CONTRACT_ADDRESS = "0x71C95911E9a5D330f4D621842EC243EE1343292e";
 
 export const StateContextProvider = ({ children }) => {
   const [provider, setProvider] = useState(null);
@@ -60,6 +60,7 @@ export const StateContextProvider = ({ children }) => {
   // Lấy tất cả chiến dịch
   const getCampaigns = async () => {
     const campaigns = await contract.getCampaigns();
+    console.log("Raw data từ getCampaigns:", campaigns);
 
     const parsedCampaigns = campaigns.map((campaign, i) => ({
       owner: campaign.owner,
